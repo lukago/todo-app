@@ -1,0 +1,22 @@
+<div class="container">
+  <div *ngIf="group" class="well">
+    <h2>Group: {{group.title}}</h2>
+    <div class="form-group row">
+      <label class="col-md-4 col-form-label">Group Title: </label>
+      <div class="col-md-8">
+        <input [(ngModel)]="group.title" class="form-control"
+               placeholder="tilte..." maxlength="80">
+      </div>
+    </div>
+    <button (click)="goBack()" class="btn btn-primary">Back</button>
+    <button (click)="saveGroupChanges()" class="btn btn-success">Save</button>
+    <br><br>
+    <div *ngIf="showWrongInputMsg" class="alert alert-danger">
+      <strong>Wrong input! </strong>Check input data and try again.
+    </div>
+  </div>
+  <div>
+    <tasks [tasks]="tasks" [useDb]="false" [groups]="[group]"
+           [loaded]="loadedTasks"></tasks>
+  </div>
+</div>

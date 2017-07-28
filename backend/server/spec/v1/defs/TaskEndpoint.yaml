@@ -1,0 +1,25 @@
+---
+properties:
+  id:
+    description: "Numer zadania"
+    type: integer
+  title:
+    description: "Tytuł zadania"
+    type: string
+  startDate:
+    description: "Data rozpoczęcia zadania"
+    type: string
+  note:
+    description: "Notatka dotycząca zadania"
+    type: string
+  priority:
+    description: "Priorytet zadania"
+    type: integer
+  groupId:
+    description: "Numer grupy zadania"
+    type: integer
+  status:
+    description: "Status zadania"
+    type: boolean
+title: TaskEndpoint
+type: object

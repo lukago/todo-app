@@ -1,0 +1,10 @@
+---
+allOf:
+  -
+    $ref: BaseResponse.yaml
+  -
+    properties:
+      group:
+        $ref: GroupEndpoint.yaml
+title: GroupResponse
+type: object

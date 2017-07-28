@@ -1,0 +1,10 @@
+---
+properties:
+  id:
+    description: "Numer grupy"
+    type: integer
+  title:
+    description: "Tytuł grupy"
+    type: string
+title: GroupEndpoint
+type: object

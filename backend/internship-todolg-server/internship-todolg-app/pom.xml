@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.comarch.fbi.internship</groupId>
+        <artifactId>internship-todolg-server</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>internship-todolg-app</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <description>Aplikacja serwerowa</description>
+    <packaging>war</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.comarch.fbi.internship</groupId>
+            <artifactId>internship-todolg-endpoints</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.comarch.fbi.internship</groupId>
+            <artifactId>internship-todolg-model</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.comarch.fbi.internship</groupId>
+            <artifactId>internship-todolg-services</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>todolg</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot-maven.plugin}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

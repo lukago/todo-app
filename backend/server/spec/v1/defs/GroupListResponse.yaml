@@ -1,0 +1,13 @@
+---
+allOf:
+  -
+    $ref: BaseResponse.yaml
+  -
+    properties:
+      groups:
+        description: "Lista grup"
+        type: array
+        items:
+          $ref: GroupEndpoint.yaml
+title: GroupsListResponse
+type: object

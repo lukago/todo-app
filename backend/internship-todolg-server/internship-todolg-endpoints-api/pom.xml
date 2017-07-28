@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.comarch.fbi.internship</groupId>
+        <artifactId>internship-todolg-server</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>internship-todolg-endpoints-api</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <description>API Endpoint'ów udostępnianych dla aplikacji klienckiej.
+        Interfejsy i DTO wchodzące w skład API generowane są automatycznie w oparciu o specyfikację
+        usług w formacie YAML.
+    </description>
+    <!-- Pliki *.yaml specyfikacji znajdują się w katalogu /server/spec/. -->
+
+    <properties>
+        <!-- Katalog zawierający pliki specyfikacji usług (w formacie YAML w konwencji Swagger). -->
+        <endpoints-api.spec-merger.specDir>../../server/spec</endpoints-api.spec-merger.specDir>
+
+        <!-- Wersja specyfikacji Endpoint API, dla której generowane błdą klasy Java (interfejsy usług oraz klasy DTO). -->
+        <endpoints-api.spec-merger.specVersion>v1</endpoints-api.spec-merger.specVersion>
+
+        <!-- Pakiet w jakim znajdą się wygenerowane interfejsy usług. -->
+        <endpoints-api.swagger-codegen.apiPackage>com.comarch.fbi.internship.todolg.endpoints.api
+        </endpoints-api.swagger-codegen.apiPackage>
+
+        <!-- Pakiet w jakim znajdą się wygenerowane klasy DTO. -->
+        <endpoints-api.swagger-codegen.dtoPackage>
+            com.comarch.fbi.internship.todolg.endpoints.api.dto
+        </endpoints-api.swagger-codegen.dtoPackage>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <!-- Swagger: -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Wygenerowanie pliku JSON ze specyfikacją usług na podstawie merge'a zdefiniowanych w specyfikacji plików YAML.
+            Operacja ta jest potrzebna ponieważ SwaggerCodegen wymaga na wejściu pojedynczego pliku ze specyfikacją. -->
+            <plugin>
+                <groupId>com.comarch.fbi.tools</groupId>
+                <artifactId>spec-merger-maven-plugin</artifactId>
+                <version>${spec-merger-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>merge</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Katalog zawierający pliki yaml specyfikacji do zmerge'owania: -->
+                            <specDir>${endpoints-api.spec-merger.specDir}</specDir>
+                            <!-- Wersja specyfikacji Endpoint API: -->
+                            <specVersion>${endpoints-api.spec-merger.specVersion}</specVersion>
+                            <!-- Katalog, do którego zostanie wygenerowany wynikowy plik JSON: -->
+                            <targetDir>${project.build.directory}/spec-merger</targetDir>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Rozpakowanie (do tymczasowego katalogu) szablonów pochodzących z dependency a potrzebnych przy generowaniu: -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${maven-dependency-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>unpack-common-swagger-codegen-templates</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.comarch.fbi</groupId>
+                                    <artifactId>common-swagger-codegen</artifactId>
+                                    <version>${common-swagger-codegen.version}</version>
+                                    <type>jar</type>
+                                    <outputDirectory>
+                                        ${project.build.directory}/common-swagger-codegen
+                                    </outputDirectory>
+                                    <overWrite>false</overWrite>
+                                    <includes>**/*.mustache</includes>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Proces generowania (interfejsów i klas) z wykorzystaniem SwaggerCodegen. -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${exec-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>java</executable>
+                    <mainClass>io.swagger.codegen.SwaggerCodegen</mainClass>
+                    <arguments>
+                        <argument>generate</argument>
+                        <!-- Input: -->
+                        <argument>-i</argument>
+                        <argument>${project.build.directory}/spec-merger/api.json</argument>
+                        <!-- Output: -->
+                        <argument>-o</argument>
+                        <argument>${project.build.directory}/generated-sources</argument>
+                        <!-- Generator: -->
+                        <argument>-l</argument>
+                        <argument>com.comarch.fbi.swagger.codegen.EndpointCustomNameGenerator
+                        </argument>
+                        <!-- Szablony: -->
+                        <argument>-t</argument>
+                        <argument>
+                            ${project.build.directory}/common-swagger-codegen/com/comarch/fbi/swagger/codegen/templates
+                        </argument>
+                        <!-- Dodatkowe parametry (generowanie tylko interfejsów oraz wskazanie pakietów dla api i modelu): -->
+                        <argument>
+                            -DinterfaceOnly=true,apiPackage=${endpoints-api.swagger-codegen.apiPackage},modelPackage=${endpoints-api.swagger-codegen.dtoPackage},dateLibrary=java8
+                        </argument>
+                    </arguments>
+                    <includeProjectDependencies>true</includeProjectDependencies>
+                    <includePluginDependencies>true</includePluginDependencies>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.comarch.fbi</groupId>
+                        <artifactId>common-swagger-codegen</artifactId>
+                        <version>${common-swagger-codegen.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>io.swagger</groupId>
+                        <artifactId>swagger-codegen-cli</artifactId>
+                        <version>${swagger-codegen-cli.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.fasterxml.jackson.datatype</groupId>
+                        <artifactId>jackson-datatype-jsr310</artifactId>
+                        <version>${jackson-datatype-jsr310.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <!-- Uwzględnienie wygenerowanych (wg specyfikacji) plików jako plików źródłowych. -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${build-helper-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>add-generated-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

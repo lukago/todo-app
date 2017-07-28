@@ -1,0 +1,94 @@
+<h3 class="text-center well">Groups</h3>
+<div class="nav nav-pills nav-stacked well">
+  <div class="table-responsive">
+
+    <!-- Search -->
+    <div>
+      <tmgr-search class="text-center"
+                   (searchedGroups)="showSearchedGroups($event)"
+                   [groupsAll]="groups" [useDb]="false"></tmgr-search>
+    </div>
+
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th class="text-center">
+          <button (click)="sortGroupsByName()">Title
+            <i *ngIf="sortService.groupsByName < 0" class="fa fa-sort-asc"></i>
+            <i *ngIf="sortService.groupsByName > 0" class="fa fa-sort-desc"></i>
+            <i *ngIf="sortService.groupsByName === 0" class="fa fa-minus"></i>
+          </button>
+        </th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody *ngIf="loaded">
+      <tr *ngFor="let group of pagedGroups">
+        <td class="text-center">{{group.title}}</td>
+        <td class="text-center">
+          <button class="btn btn-primary btn-sm"
+                  (click)="gotoGroupEditor(group.id)">Edit
+          </button>
+        </td>
+        <td class="text-center">
+          <button class="btn btn-danger btn-sm"
+                  (click)="deleteGroup(group)">-
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- pager -->
+  <div class="text-center">
+    <ul *ngIf="pager && pager.pages && pager.pages.length"
+        class="pagination pagination-sm">
+      <li [ngClass]="{disabled:pager.currentPage === 1}">
+        <a href="javascript:void(0)" (click)="setPage(1)">First</a>
+      </li>
+      <li *ngFor="let page of pager.pages"
+          [ngClass]="{active:pager.currentPage === page}">
+        <a href="javascript:void(0)" (click)="setPage(page)">{{page}}</a>
+      </li>
+      <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+        <a href="javascript:void(0)" (click)="setPage(pager.totalPages)">Last</a>
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="!loaded" class="row">
+    <br><br>
+    <div class="loader-relative col-xs-12"></div>
+    <br><br><br>
+  </div>
+
+  <button *ngIf="!showAddMenu" type="submit"
+          class="btn btn-success btn-lg btn-block"
+          (click)="showAddMenu=true">+
+  </button>
+
+
+  <div *ngIf="showAddMenu" class="well">
+    <h4>Add new group</h4>
+    <div class="well">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">Group name:</label>
+        <div class="col-md-9">
+          <input class="form-control" type="text" #groupName maxlength="80"/>
+        </div>
+      </div>
+      <button class="btn btn-success btn-block"
+              (click)="addGroup(groupName.value)">Add
+      </button>
+      <button class="btn btn-danger btn-block"
+              (click)="showAddMenu=false; showWrongInputMsg=false">Cancel
+      </button>
+      <br>
+      <div *ngIf="showWrongInputMsg" class="alert alert-danger">
+        <strong>Wrong input! </strong>Check input data and try again.
+      </div>
+    </div>
+  </div>
+</div>

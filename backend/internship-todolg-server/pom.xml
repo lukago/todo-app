@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.comarch.fbi.internship</groupId>
+        <artifactId>internship-todolg</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>internship-todolg-server</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <description>Moduł części serwerowej</description>
+    <packaging>pom</packaging>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.comarch.fbi.internship</groupId>
+                <artifactId>internship-todolg-services</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.comarch.fbi.internship</groupId>
+                <artifactId>internship-todolg-model</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.comarch.fbi.internship</groupId>
+                <artifactId>internship-todolg-endpoints</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.comarch.fbi.internship</groupId>
+                <artifactId>internship-todolg-endpoints-api</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.comarch.fbi.internship</groupId>
+                <artifactId>internship-todolg-services-api</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.comarch.fbi.internship</groupId>
+                <artifactId>internship-todolg-app</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+    <modules>
+        <module>internship-todolg-model</module>
+        <module>internship-todolg-endpoints-api</module>
+        <module>internship-todolg-endpoints</module>
+        <module>internship-todolg-services-api</module>
+        <module>internship-todolg-services</module>
+        <module>internship-todolg-app</module>
+    </modules>
+</project>

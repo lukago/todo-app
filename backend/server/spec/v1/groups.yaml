@@ -1,0 +1,142 @@
+---
+info:
+  title: groups.json
+paths:
+  /groups:
+    get:
+      description: "Pobiera listę grup"
+      operationId: getGroupsList
+      parameters:
+        - name: title
+          in: query
+          description: "Tytuł grupy"
+          type: string
+          required: false
+      produces:
+        - application/json
+      responses:
+        200:
+          description: "Lista grup"
+          schema:
+            $ref: defs/GroupListResponse.yaml
+      tags:
+        - groups
+    post:
+      description: "Dodaje grupę"
+      operationId: newGroup
+      parameters:
+        - in: body
+          name: body
+          description: "Obiekt nowej grupy"
+          required: true
+          schema:
+            $ref: defs/NewGroup.yaml
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: "Poprawne utworzenie grupy"
+          schema:
+            $ref: defs/NewGroupResponse.yaml
+      tags:
+        - groups
+  /groups/addTest:
+    post:
+      description: "Dodaje testowe grupy"
+      operationId: addTest
+      parameters:
+        - name: count
+          in: query
+          description: "Liczba grup"
+          type: integer
+          default: 5
+      produces:
+        - application/json
+      responses:
+        201:
+          description: "Poprawne utworzenie grup"
+          schema:
+            $ref: defs/BaseResponse.yaml
+      tags:
+        - tests
+  /groups/{id}:
+    get:
+      description: "Pobiera jedną grupę"
+      operationId: getGroup
+      parameters:
+        - name: id
+          in: path
+          description: "Id grupy"
+          type: integer
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Pojedyńcza grupa
+          schema:
+            $ref: /defs/GroupResponse.yaml
+        '400':
+          description: Niepoprawne id
+          schema:
+            $ref: /defs/BaseResponse.yaml
+        '404':
+          description: Nieznaleziono grupy
+          schema:
+            $ref: /defs/BaseResponse.yaml
+      tags:
+        - groups
+    put:
+      description: "Aktualizuje jedną grupę"
+      operationId: updateGroup
+      parameters:
+        - in: path
+          name: id
+          description: "Id grupy"
+          type: integer
+          required: true
+        - in: body
+          name: body
+          description: "Obiekt nowej grupy"
+          required: true
+          schema:
+            $ref: defs/NewGroup.yaml
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Modyfikacja grupy
+          schema:
+            $ref: /defs/GroupResponse.yaml
+        '400':
+          description: Niepoprawne id
+          schema:
+            $ref: /defs/BaseResponse.yaml
+        '404':
+          description: Nieznaleziono grupy
+          schema:
+            $ref: /defs/BaseResponse.yaml
+      tags:
+        - groups
+    delete:
+      description: "Usuwa grupe"
+      operationId: deleteGroup
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: "Id grupy"
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Usunięto grupę
+      tags:
+        - groups
+
+swagger: "2.0"

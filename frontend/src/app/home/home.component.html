@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="row content">
+
+    <div class="col-md-8">
+      <tasks #tasksComponent></tasks>
+    </div>
+
+    <div class="col-md-4">
+      <groups (deleted)="tasksComponent.handleGroupDeleted($event)"
+              (added)="tasksComponent.handleGroupAdded($event)">
+      </groups>
+    </div>
+  </div>
+</div>

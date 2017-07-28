@@ -1,0 +1,17 @@
+---
+discriminator: baseResponseDiscriminator
+properties:
+  messages:
+    description: "Kolekcja komunikatów"
+    items:
+      $ref: EndpointMessage.yaml
+    type: array
+  meta:
+    description: "Dodatkowe metadane dotyczące żądania i jego obsługi"
+    properties:
+      id:
+        description: "Unikalny identyfikator żądania"
+        type: string
+    type: object
+title: BaseResponse
+type: object

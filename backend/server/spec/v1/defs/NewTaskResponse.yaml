@@ -1,0 +1,11 @@
+---
+allOf:
+  -
+    $ref: BaseResponse.yaml
+  -
+    properties:
+      id:
+        description: "Numer zadania"
+        type: integer
+title: NewTaskResponse
+type: object

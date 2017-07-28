@@ -1,0 +1,10 @@
+---
+allOf:
+  -
+    $ref: BaseResponse.yaml
+  -
+    properties:
+      task:
+        $ref: TaskEndpoint.yaml
+title: TaskResponse
+type: object

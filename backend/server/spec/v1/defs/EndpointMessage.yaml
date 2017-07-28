@@ -1,0 +1,21 @@
+---
+properties:
+  type:
+    description: "Typ komunikatu"
+    type: string
+    default: SUCCESS
+    enum:
+    - INFO
+    - ERROR
+    - WARNING
+    - SUCCESS
+  code:
+    description: "Kod komunikatu"
+    type: string
+  meta:
+    description: "Dodatkowe metadane dotyczące komunikatu, np. dodatkowa treść, zewnętrzny opis, unikalny identyfikator, itp."
+    items:
+        type: string
+    type: array
+title: ResponseMessages
+type: object

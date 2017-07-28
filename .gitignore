@@ -1,0 +1,42 @@
+# Angular
+.idea
+*.iml
+node_modules
+jspm_packages
+npm-debug.log
+debug.log
+*.js
+!systemjs.config.extras.js
+!systemjs.config.js
+!systemjs-angular-loader.js
+*.js.map
+e2e/**/*.js
+e2e/**/*.js.map
+_test-output
+_temp
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven
+target/
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*

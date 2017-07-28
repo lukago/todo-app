@@ -1,0 +1,9 @@
+<div class="form-group input-group">
+  <span class="input-group-addon">Search</span>
+  <input *ngIf="tasksAll" #searchBoxTask class="form-control"
+         placeholder="Enter task title..."
+         (keyup)="searchTasks(searchBoxTask.value)">
+  <input *ngIf="groupsAll" #searchBoxGroup class="form-control"
+         placeholder="Enter group title..."
+         (keyup)="searchGroups(searchBoxGroup.value)">
+</div>

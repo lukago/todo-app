@@ -1,0 +1,8 @@
+---
+properties:
+  title:
+    description: "Tytuł grupy"
+    type: string
+    required: true
+title: NewGroup
+type: object

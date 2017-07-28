@@ -1,0 +1,190 @@
+<h3 class="text-center well">Tasks</h3>
+<div class="nav nav-pills nav-stacked well">
+  <div class="table-responsive">
+
+    <!-- Search -->
+    <div>
+      <tmgr-search class="text-center"
+                   (searchedTasks)="showSearchedTasks($event)"
+                   [tasksAll]="tasks" [useDb]="false">
+      </tmgr-search>
+    </div>
+
+    <!-- Table -->
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th class="text-center">
+          <button (click)="sortTasksByTitle()">Title
+            <i *ngIf="sortService.tasksByTitle < 0" class="fa fa-sort-asc"></i>
+            <i *ngIf="sortService.tasksByTitle > 0" class="fa fa-sort-desc"></i>
+            <i *ngIf="sortService.tasksByTitle === 0" class="fa fa-minus"></i>
+          </button>
+        </th>
+        <th class="text-center">
+          <button (click)="sortTasksByDate()">Date
+            <i *ngIf="sortService.tasksByDate < 0" class="fa fa-sort-asc"></i>
+            <i *ngIf="sortService.tasksByDate > 0" class="fa fa-sort-desc"></i>
+            <i *ngIf="sortService.tasksByDate === 0" class="fa fa-minus"></i>
+          </button>
+        </th>
+        <th *ngIf="!useDb" class="text-center">
+          <button (click)="sortTasksByNote()">Note
+            <i *ngIf="sortService.tasksByNote < 0" class="fa fa-sort-asc"></i>
+            <i *ngIf="sortService.tasksByNote > 0" class="fa fa-sort-desc"></i>
+            <i *ngIf="sortService.tasksByNote === 0" class="fa fa-minus"></i>
+          </button>
+        </th>
+        <th *ngIf="useDb" class="text-center">
+          <button (click)="sortTasksByGroupName()">Group
+            <i *ngIf="sortService.tasksByGroupName < 0" class="fa fa-sort-asc"></i>
+            <i *ngIf="sortService.tasksByGroupName > 0" class="fa fa-sort-desc"></i>
+            <i *ngIf="sortService.tasksByGroupName === 0" class="fa fa-minus"></i>
+          </button>
+        </th>
+        <th class="text-center">
+          <button (click)="sortTasksByPrio()">Priority
+            <i *ngIf="sortService.tasksByPrio < 0" class="fa fa-sort-asc"></i>
+            <i *ngIf="sortService.tasksByPrio > 0" class="fa fa-sort-desc"></i>
+            <i *ngIf="sortService.tasksByPrio === 0" class="fa fa-minus"></i>
+          </button>
+        </th>
+        <th *ngIf="!useDb" class="text-center">
+          <button (click)="sortTasksByStatus()">Status
+            <i *ngIf="sortService.tasksByStatus < 0" class="fa fa-sort-asc"></i>
+            <i *ngIf="sortService.tasksByStatus > 0" class="fa fa-sort-desc"></i>
+            <i *ngIf="sortService.tasksByStatus === 0" class="fa fa-minus"></i>
+          </button>
+        </th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody *ngIf="loaded">
+      <tr *ngFor="let task of pagedTasks">
+        <td class="text-center">{{task.title}}</td>
+        <td *ngIf="useDb" class="text-center">
+          {{task.startDate.toLocaleDateString()}}
+        </td>
+        <td *ngIf="!useDb" class="text-center">
+          {{task.startDate.toLocaleDateString()}}
+          {{task.startDate.toLocaleTimeString()}}
+        </td>
+        <td *ngIf="!useDb" class="text-center">{{task.note}}</td>
+        <td *ngIf="useDb" class="text-center">{{getGroupName(task.groupId)}}</td>
+        <td class="text-center">{{task.priority}}</td>
+        <td *ngIf="!useDb" class="text-center">
+          {{task.status ? 'Done' : 'To do'}}
+        </td>
+        <td class="text-center">
+          <button class="btn btn-primary btn-sm"
+                  (click)="gotoTaskEditor(task.id)">Edit
+          </button>
+        </td>
+        <td class="text-center">
+          <button class="btn btn-danger btn-sm"
+                  (click)="deleteTask(task)">-
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- pager -->
+  <div class="text-center">
+    <ul *ngIf="pager && pager.pages && pager.pages.length"
+        class="pagination pagination-sm">
+      <li [ngClass]="{disabled:pager.currentPage === 1}">
+        <a href="javascript:void(0)" (click)="setPage(1)">First</a>
+      </li>
+      <li *ngFor="let page of pager.pages"
+          [ngClass]="{active:pager.currentPage === page}">
+        <a href="javascript:void(0)" (click)="setPage(page)">{{page}}</a>
+      </li>
+      <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+        <a href="javascript:void(0)" (click)="setPage(pager.totalPages)">Last</a>
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="!loaded" class="row">
+    <br><br>
+    <div class="loader-relative col-xs-12"></div>
+    <br><br><br>
+  </div>
+
+  <button *ngIf="!showAddMenu" class="btn btn-success btn-lg btn-block"
+          (click)="showAddMenu=true">+
+  </button>
+
+  <!-- Adding new task -->
+  <div *ngIf="showAddMenu" class="well">
+    <h4>Add new task</h4>
+    <div class="well">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">Title:</label>
+        <div class="col-md-9">
+          <input class="form-control" #title
+                 required minlength="1" maxlength="80"/>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">Date:</label>
+        <div class="col-md-9"><input class="form-control" type="datetime-local"
+                                     #date [value]="today"></div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">Note:</label>
+        <div class="col-md-9"><textarea class="form-control" type="text"
+                                        #note rows="3"
+                                        maxlength="255"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">Priority:</label>
+        <div class="col-md-9"><input class="form-control" type="number"
+                                     #prio [value]=0>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">Status:</label>
+        <div class="col-md-9">
+          <select class="form-control" #status>
+            <option [value]="false">To do</option>
+            <option [value]="true">Done</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">Group name:</label>
+        <div class="col-md-9">
+          <select class="form-control" #gid>
+            <option *ngFor="let group of groups" [value]="group.id">
+              {{group.title}}
+            </option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+    <button class="btn btn-success btn-block"
+            (click)="addTask(title.value, date.value,
+                  note.value, prio.value, gid.value, status.value)">
+      Add
+    </button>
+    <button class="btn btn-danger btn-block"
+            (click)="showAddMenu=false; showWrongInputMsg=false">
+      Cancel
+    </button>
+    <br>
+    <div *ngIf="showWrongInputMsg" class="alert alert-danger">
+      <strong>Wrong input! </strong>Check input data and try again.
+    </div>
+  </div>
+</div>

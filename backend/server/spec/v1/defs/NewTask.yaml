@@ -1,0 +1,28 @@
+---
+properties:
+  title:
+    description: "Tytuł zadania"
+    type: string
+    required: true
+  startDate:
+    description: "Data rozpoczęcia zadania"
+    type: string
+    required: true
+  note:
+    description: "Notatka dotycząca zadania"
+    type: string
+    required: true
+  priority:
+    description: "Priorytet zadania"
+    type: integer
+    required: true
+  groupId:
+    description: "Numer grupy zadania"
+    type: integer
+    required: true
+  status:
+    description: "Status zadania"
+    type: boolean
+    required: true
+title: NewTask
+type: object

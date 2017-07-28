@@ -1,0 +1,55 @@
+<div class="container">
+  <div *ngIf="task" class="well">
+    <h2>Task: {{task.title}}</h2>
+
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label">Title:</label>
+      <div class="col-md-9">
+        <input [(ngModel)]="task.title" class="form-control" maxlength="80"/>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label">Date:</label>
+      <div class="col-md-9">
+        <input [(ngModel)]="dateStr" class="form-control" type="datetime-local">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label">Note:</label>
+      <div class="col-md-9">
+        <textarea [(ngModel)]="task.note" class="form-control"
+                  type="text" rows="3" maxlength="255"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label">Priority:</label>
+      <div class="col-md-9">
+        <input [(ngModel)]="task.priority" class="form-control" type="number">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label">Group name:</label>
+      <div class="col-md-9">
+        <select class="form-control" [(ngModel)]="task.groupId">
+          <option *ngFor="let group of groups" [value]="group.id">
+            {{group.title}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <button (click)="goBack()" class="btn btn-primary">Back</button>
+
+    <button (click)="saveTaskChanges()" class="btn btn-success">Save</button>
+
+    <br><br>
+    <div *ngIf="showWrongInputMsg" class="alert alert-danger">
+      <strong>Wrong input! </strong>Check input data and try again.
+    </div>
+
+  </div>
+</div>

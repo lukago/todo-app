@@ -1,0 +1,152 @@
+---
+info:
+  title: tasks.json
+paths:
+  /tasks:
+    get:
+      description: "Pobiera listę zadań"
+      operationId: getTasksList
+      parameters:
+        - name: groupId
+          in: query
+          description: "Id grupy zadania"
+          type: integer
+          required: false
+        - name: title
+          in: query
+          description: "Tytuł zadania"
+          type: string
+          required: false
+      produces:
+        - application/json
+      responses:
+        200:
+          description: "Lista zadań grupy"
+          schema:
+            $ref: defs/tasksListResponse.yaml
+      tags:
+        - tasks
+    post:
+      description: "Dodaje zadanie"
+      operationId: newTask
+      parameters:
+        - in: body
+          name: body
+          description: "Obiekt nowego zadania"
+          required: true
+          schema:
+            $ref: defs/NewTask.yaml
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: "Poprawne utworzenie zadania"
+          schema:
+            $ref: defs/NewTaskResponse.yaml
+      tags:
+        - tasks
+  /tasks/addTest:
+    post:
+      description: "Dodaje testowe zadania"
+      operationId: addTest
+      parameters:
+        - name: groupId
+          in: query
+          description: "Id grupy"
+          type: integer
+          required: true
+        - name: count
+          in: query
+          description: "Liczba zadań"
+          type: integer
+          default: 5
+      produces:
+        - application/json
+      responses:
+        201:
+          description: "Poprawne utworzenie zadań"
+          schema:
+            $ref: defs/BaseResponse.yaml
+      tags:
+        - tests
+  /tasks/{id}:
+    get:
+      description: "Pobiera jedno zadanie"
+      operationId: getTask
+      parameters:
+        - name: id
+          in: path
+          description: "Id zadania"
+          type: integer
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Pojedyńcze zadanie
+          schema:
+            $ref: /defs/TaskResponse.yaml
+        '400':
+          description: Niepoprawne id
+          schema:
+            $ref: /defs/BaseResponse.yaml
+        '404':
+          description: Nieznaleziono zadania
+          schema:
+            $ref: /defs/BaseResponse.yaml
+      tags:
+        - tasks
+    put:
+      description: "Aktualizuje jedno zadanie"
+      operationId: updateTask
+      parameters:
+        - in: path
+          name: id
+          description: "Id zadania"
+          type: integer
+          required: true
+        - in: body
+          name: body
+          description: "Obiekt nowego zadania"
+          required: true
+          schema:
+            $ref: defs/NewTask.yaml
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Modyfikacja zadania
+          schema:
+            $ref: /defs/TaskResponse.yaml
+        '400':
+          description: Niepoprawne id
+          schema:
+            $ref: /defs/BaseResponse.yaml
+        '404':
+          description: Nieznaleziono zadania
+          schema:
+            $ref: /defs/BaseResponse.yaml
+      tags:
+        - tasks
+    delete:
+      description: "Usuwa zadanie"
+      operationId: deleteTask
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: "Id zadania"
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Usunięto zadanie
+      tags:
+        - tasks
+
+swagger: "2.0"

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.comarch.fbi</groupId>
+        <artifactId>common-maven-java</artifactId>
+        <version>1.0.1</version>
+    </parent>
+    <groupId>com.comarch.fbi.internship</groupId>
+    <artifactId>internship-todolg</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+
+    <description>Główny POM projektu seedowego dla staży.</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <!-- Wersje - CA wewnetrzne - Wersja częsci serwerowej modułu:
+        Wykorzystana jako uspójniona wersja dla wszystkich artefaktów serwerowych. -->
+        <server.version>1.0.0-SNAPSHOT</server.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <spring-boot.version>1.5.3.RELEASE</spring-boot.version>
+        <spring-boot-maven.plugin>1.5.3.RELEASE</spring-boot-maven.plugin>
+
+        <maven-resources-plugin.version>3.0.1</maven-resources-plugin.version>
+
+        <!-- Wersje - CA - Common dla SwaggerCodegen: -->
+        <common-swagger-codegen.version>1.0.1</common-swagger-codegen.version>
+        <!-- Wersje - Swagger: -->
+        <swagger.version>2.7.0</swagger.version>
+        <bootstrap.version>3.1.0</bootstrap.version><!-- WebJars bootstrap (for Swagger). -->
+        <swagger-codegen-cli.version>2.2.2</swagger-codegen-cli.version>
+
+        <!-- Wersje - Jackson-Datatype dla JSR310 (Date and Time API z Java 8): -->
+        <jackson-datatype-jsr310.version>2.8.7</jackson-datatype-jsr310.version>
+
+        <!-- Wersje - Maven Plugins: -->
+        <exec-maven-plugin.version>1.3.2</exec-maven-plugin.version>
+        <spec-merger-maven-plugin.version>1.1.0</spec-merger-maven-plugin.version>
+        <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
+        <build-helper-maven-plugin.version>1.12</build-helper-maven-plugin.version>
+        <apt-maven-plugin.version>1.1.3</apt-maven-plugin.version>
+
+        <querydsl.version>3.7.4</querydsl.version>
+        <querydsl-apt.version>4.1.4</querydsl-apt.version>
+        <querydsl-jpa.version>4.1.4</querydsl-jpa.version>
+
+        <postgresql.version>9.4.1212</postgresql.version>
+    </properties>
+
+    <!-- Moduły projektu: -->
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <modules>
+        <module>internship-todolg-server</module>
+    </modules>
+</project>

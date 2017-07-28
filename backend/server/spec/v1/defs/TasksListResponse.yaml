@@ -1,0 +1,13 @@
+---
+allOf:
+  -
+    $ref: BaseResponse.yaml
+  -
+    properties:
+      tasks:
+        description: "Lista zadań"
+        type: array
+        items:
+          $ref: TaskEndpoint.yaml
+title: TasksListResponse
+type: object

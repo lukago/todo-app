@@ -1,0 +1,11 @@
+---
+allOf:
+  -
+    $ref: BaseResponse.yaml
+  -
+    properties:
+      id:
+        description: "Numer grupy"
+        type: integer
+title: NewGroupResponse
+type: object
